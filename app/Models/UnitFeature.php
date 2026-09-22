@@ -3,8 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable(['unit_id','feature','value'])]
 class UnitFeature extends Model
 {
-    //
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }

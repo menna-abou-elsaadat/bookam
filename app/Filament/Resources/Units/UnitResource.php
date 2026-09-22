@@ -13,7 +13,6 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use App\Filament\Clusters\Units\UnitsCluster;
 
 class UnitResource extends Resource
 {
@@ -23,7 +22,12 @@ class UnitResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Unit';
 
-    protected static ?string $cluster = UnitsCluster::class;
+    protected static ?int $navigationSort = 1;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
     public static function form(Schema $schema): Schema
     {
         return UnitForm::configure($schema);
@@ -37,7 +41,7 @@ class UnitResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

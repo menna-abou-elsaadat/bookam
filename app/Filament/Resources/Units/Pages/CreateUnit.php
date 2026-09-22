@@ -13,4 +13,9 @@ class CreateUnit extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    protected function getFormActions(): array
+    {
+        return [];
+    }
 }

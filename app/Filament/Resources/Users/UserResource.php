@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class UserResource extends Resource
 {
@@ -23,6 +24,7 @@ class UserResource extends Resource
     protected static ?string $recordTitleAttribute = 'Admin';
     // Change the navigation label
     protected static ?string $navigationLabel = 'Admins';
+    protected static string | UnitEnum | null $navigationGroup = 'Management';
 
     // Change the plural label
     public static function getPluralLabel(): ?string

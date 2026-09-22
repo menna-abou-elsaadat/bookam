@@ -18,10 +18,16 @@ class OwnerResource extends Resource
 {
     protected static ?string $model = Owner::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUser;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     protected static ?string $recordTitleAttribute = 'Owner';
+    protected static ?int $navigationSort = 1;
+    // protected static ?string $navigationBadgeTooltip = 'The number of users';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
     public static function form(Schema $schema): Schema
     {
         return OwnerForm::configure($schema);
