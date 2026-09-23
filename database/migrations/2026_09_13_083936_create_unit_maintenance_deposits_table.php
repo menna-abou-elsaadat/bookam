@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('unit_id')->constrained()->onDelete('cascade');
             $table->double('amount')->nullable();
             $table->date('deposit_date')->nullable();
+            $table->boolean('is_paid')->default(false);
             $table->timestamps();
         });
     }

@@ -13,10 +13,10 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use UnitEnum;
 use App\Filament\Resources\Units\Pages\ManageUnitInstallments;
 use App\Filament\Resources\Units\Pages\ManageUnitFurniture;
 use App\Filament\Resources\Units\Pages\ManageUnitExpense;
+use App\Filament\Resources\Units\Pages\ManageUnitMaintenanceDeposit;
 use Filament\Resources\Pages\Page;
 use Filament\Pages\Enums\SubNavigationPosition;
 
@@ -24,7 +24,6 @@ class UnitResource extends Resource
 {
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
     protected static ?string $model = Unit::class;
-    protected static string | UnitEnum | null $navigationGroup = 'Units';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
     protected static ?string $recordTitleAttribute = 'Unit';
@@ -61,6 +60,7 @@ class UnitResource extends Resource
             'installement' => Pages\ManageUnitInstallments::route('/{record}/installement'),
             'furniture' => Pages\ManageUnitFurniture::route('/{record}/furniture'),
             'expenses' => Pages\ManageUnitExpense::route('/{record}/expenses'),
+            'maintenance' => Pages\ManageUnitMaintenanceDeposit::route('/{record}/maintenance'),
         ];
     }
 
@@ -72,6 +72,7 @@ class UnitResource extends Resource
             Pages\ManageUnitInstallments::class,
             Pages\ManageUnitFurniture::class,
             Pages\ManageUnitExpense::class,
+            Pages\ManageUnitMaintenanceDeposit::class,
         ]);
     }
 }

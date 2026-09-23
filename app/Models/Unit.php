@@ -40,4 +40,9 @@ class Unit extends Model
         return $this->hasMany(UnitExpense::class);
     }
 
+    public function maintenanceDeposit()
+    {
+        return $this->hasMany(UnitMaintenanceDeposit::class);
+    }
+
 }

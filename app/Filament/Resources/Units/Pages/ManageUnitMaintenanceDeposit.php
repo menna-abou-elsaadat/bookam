@@ -12,40 +12,35 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\IconColumn;
 
-class ManageUnitInstallments extends ManageRelatedRecords
+
+class ManageUnitMaintenanceDeposit extends ManageRelatedRecords
 {
     protected static string $resource = UnitResource::class;
 
-    protected static string $relationship = 'installements';
+    protected static string $relationship = 'maintenanceDeposit';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendar;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedWrench;
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('amount')
+                    ->numeric()
                     ->required()
-                    ->numeric(),
-                TextInput::make('currency')
-                    ->required()
-                    ->default('EGP'),
-                Textarea::make('description')
-                    ->columnSpanFull(),
-                DatePicker::make('installements_date')
+                    ->suffix('EGY'),
+                DatePicker::make('deposit_date')
                     ->required(),
-                DatePicker::make('due_date'),
                 Toggle::make('is_paid')
                     ->required(),
             ]);
@@ -54,17 +49,12 @@ class ManageUnitInstallments extends ManageRelatedRecords
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('Installments')
+            ->recordTitleAttribute('Maintenance deposit')
             ->columns([
                 TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('currency')
-                    ->searchable(),
-                TextColumn::make('installements_date')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('due_date')
+                TextColumn::make('deposit_date')
                     ->date()
                     ->sortable(),
                 IconColumn::make('is_paid')
