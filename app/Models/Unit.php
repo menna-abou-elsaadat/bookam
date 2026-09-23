@@ -24,4 +24,20 @@ class Unit extends Model
     {
         return $this->hasMany(UnitFeature::class);
     }
+
+    public function installements()
+    {
+        return $this->hasMany(UnitInstallement::class);
+    }
+
+    public function furniture()
+    {
+        return $this->hasMany(UnitFurniture::class);
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(UnitExpense::class);
+    }
+
 }

@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unit_installements', function (Blueprint $table) {
+        Schema::create('unit_furniture', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('unit_id')->constrained()->onDelete('cascade');
-            $table->decimal('amount', 10, 2);
-            $table->string('currency', 3)->default('EGP');
+            $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
+            $table->string('name');
+            $table->decimal('price', 10, 2);
             $table->text('description')->nullable();
-            $table->date('installements_date');
-            $table->date('due_date')->nullable();
-            $table->boolean('is_paid')->default(false);
+            $table->text('image_url')->nullable();
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('unit_installements');
+        Schema::dropIfExists('unit_furniture');
     }
 };

@@ -14,9 +14,15 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
+use App\Filament\Resources\Units\Pages\ManageUnitInstallments;
+use App\Filament\Resources\Units\Pages\ManageUnitFurniture;
+use App\Filament\Resources\Units\Pages\ManageUnitExpense;
+use Filament\Resources\Pages\Page;
+use Filament\Pages\Enums\SubNavigationPosition;
 
 class UnitResource extends Resource
 {
+    protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
     protected static ?string $model = Unit::class;
     protected static string | UnitEnum | null $navigationGroup = 'Units';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
@@ -52,6 +58,20 @@ class UnitResource extends Resource
             'index' => ListUnits::route('/'),
             'create' => CreateUnit::route('/create'),
             'edit' => EditUnit::route('/{record}/edit'),
+            'installement' => Pages\ManageUnitInstallments::route('/{record}/installement'),
+            'furniture' => Pages\ManageUnitFurniture::route('/{record}/furniture'),
+            'expenses' => Pages\ManageUnitExpense::route('/{record}/expenses'),
         ];
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            // ...
+            Pages\EditUnit::class,
+            Pages\ManageUnitInstallments::class,
+            Pages\ManageUnitFurniture::class,
+            Pages\ManageUnitExpense::class,
+        ]);
     }
 }
