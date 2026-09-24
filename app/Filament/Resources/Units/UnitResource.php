@@ -17,6 +17,7 @@ use App\Filament\Resources\Units\Pages\ManageUnitInstallments;
 use App\Filament\Resources\Units\Pages\ManageUnitFurniture;
 use App\Filament\Resources\Units\Pages\ManageUnitExpense;
 use App\Filament\Resources\Units\Pages\ManageUnitMaintenanceDeposit;
+use App\Filament\Resources\Units\Pages\ManageRentUnit;
 use Filament\Resources\Pages\Page;
 use Filament\Pages\Enums\SubNavigationPosition;
 
@@ -61,6 +62,7 @@ class UnitResource extends Resource
             'furniture' => Pages\ManageUnitFurniture::route('/{record}/furniture'),
             'expenses' => Pages\ManageUnitExpense::route('/{record}/expenses'),
             'maintenance' => Pages\ManageUnitMaintenanceDeposit::route('/{record}/maintenance'),
+            'rent' => Pages\ManageRentUnit::route('/{record}/rent'),
         ];
     }
 
@@ -73,6 +75,7 @@ class UnitResource extends Resource
             Pages\ManageUnitFurniture::class,
             Pages\ManageUnitExpense::class,
             Pages\ManageUnitMaintenanceDeposit::class,
+            Pages\ManageRentUnit::class,
         ]);
     }
 }

@@ -45,4 +45,9 @@ class Unit extends Model
         return $this->hasMany(UnitMaintenanceDeposit::class);
     }
 
+    public function rentUnits()
+    {
+        return $this->hasMany(RentUnit::class);
+    }
+
 }
