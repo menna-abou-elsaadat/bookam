@@ -44,7 +44,7 @@ class ManageUnitExpense extends ManageRelatedRecords
                         TextInput::make('name')
                         ->required(),
                     ])
-                    ->searchable(),
+                    ,
                 TextInput::make('amount')
                     ->required()
                     ->numeric(),

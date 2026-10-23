@@ -50,4 +50,15 @@ class Unit extends Model
         return $this->hasMany(RentUnit::class);
     }
 
+    public function rentTypes()
+    {
+        return $this->hasMany(UnitRentType::class);
+    }
+
+    public function lockedDates()
+    {
+        return $this->hasMany(UnitLockedDates::class);
+    }
+
+
 }

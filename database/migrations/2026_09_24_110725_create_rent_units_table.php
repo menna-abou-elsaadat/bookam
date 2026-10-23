@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rent_units', function (Blueprint $table) {
             $table->id();
             $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
-            $table->enum('rent_type', array_column(\App\Enums\RentType::cases(), 'value'));
+            $table->foreignId('unit_rent_type_id')->constrained('unit_rent_types')->onDelete('cascade');
             $table->string('tenant_phone')->nullable();
             $table->text('tenant_id_card_front')->nullable();
             $table->text('tenant_id_card_back')->nullable();

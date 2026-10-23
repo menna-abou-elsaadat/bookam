@@ -18,6 +18,8 @@ use App\Filament\Resources\Units\Pages\ManageUnitFurniture;
 use App\Filament\Resources\Units\Pages\ManageUnitExpense;
 use App\Filament\Resources\Units\Pages\ManageUnitMaintenanceDeposit;
 use App\Filament\Resources\Units\Pages\ManageRentUnit;
+use App\Filament\Resources\Units\Pages\ManageUnitRentType;
+use App\Filament\Resources\Units\Pages\ManageUnitLockedDate;
 use Filament\Resources\Pages\Page;
 use Filament\Pages\Enums\SubNavigationPosition;
 
@@ -63,6 +65,8 @@ class UnitResource extends Resource
             'expenses' => Pages\ManageUnitExpense::route('/{record}/expenses'),
             'maintenance' => Pages\ManageUnitMaintenanceDeposit::route('/{record}/maintenance'),
             'rent' => Pages\ManageRentUnit::route('/{record}/rent'),
+            'rent-type' => ManageUnitRentType::route('/{record}/rent-type'),
+            'locked-dates' => ManageUnitLockedDate::route('/{record}/locked-dates'),
         ];
     }
 
@@ -72,8 +76,10 @@ class UnitResource extends Resource
             // ...
             Pages\EditUnit::class,
             Pages\ManageUnitInstallments::class,
+            Pages\ManageUnitLockedDate::class,
             Pages\ManageUnitFurniture::class,
             Pages\ManageUnitExpense::class,
+            Pages\ManageUnitRentType::class,
             Pages\ManageUnitMaintenanceDeposit::class,
             Pages\ManageRentUnit::class,
         ]);

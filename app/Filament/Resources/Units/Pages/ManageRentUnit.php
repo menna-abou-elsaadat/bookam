@@ -35,8 +35,13 @@ class ManageRentUnit extends ManageRelatedRecords
     {
         return $schema
             ->components([
-                Select::make('rent_type')
-                    ->options(['daily' => 'Daily', 'monthly' => 'Monthly', 'yearly' => 'Yearly'])
+                Select::make('unit_rent_type_id')
+                ->label('Rent Type')
+                    ->options(fn () => $this->getOwnerRecord()
+                        ->rentTypes()
+                        ->pluck('name', 'id')
+                        ->toArray()
+                    )
                     ->required(),
                 TextInput::make('tenant_phone')
                     ->tel(),

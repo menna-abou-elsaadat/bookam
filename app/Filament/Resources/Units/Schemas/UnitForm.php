@@ -36,7 +36,7 @@ class UnitForm
                                         ->required(),
                                     TextInput::make('total_price')
                                         ->numeric()
-                                        ->prefix('$'),
+                                        ->prefix('EGP'),
                                 ])->columns(2)
                             ]),
                     Step::make('Owners')
