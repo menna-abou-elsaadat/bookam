@@ -21,6 +21,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\Select;
 
 class ManageUnitFurniture extends ManageRelatedRecords
 {
@@ -34,12 +35,19 @@ class ManageUnitFurniture extends ManageRelatedRecords
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
+                Select::make('name')
+                    ->required()
+                    ->options(function ($record) {
+                        $options =  \App\Models\Furniture::all()->pluck('name', 'name');
+                        if($record?->name && ! isset($options[$record->name])) {
+                            $options[$record->name] = $record->name ;
+                        }
+                        return $options;
+                    }),
                 TextInput::make('price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('EGP'),
                 Textarea::make('description')
                     ->columnSpanFull(),
                 FileUpload::make('image_url')

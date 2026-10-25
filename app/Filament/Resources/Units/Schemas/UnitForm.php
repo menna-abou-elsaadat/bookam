@@ -61,9 +61,18 @@ class UnitForm
                             Repeater::make('features')
                             ->relationship('features')
                                 ->schema([
-                                    Textarea::make('feature')
-                                        ->required(),
-                                    Textarea::make('value')
+                                    Select::make('feature')
+                                        ->required()
+                                        ->options(function ($record) {
+                                                $options = \App\Models\Feature::pluck('name', 'name')->toArray();
+
+                                                if ($record?->feature && ! isset($options[$record->feature])) {
+                                                    $options[$record->feature] = $record->feature ;
+                                                }
+
+                                                return $options;
+                                            }),
+                                    TextInput::make('value')
                                         ->required(),
                                 ])
                                 ->columns(2)
