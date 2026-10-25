@@ -39,7 +39,7 @@ class ManageRentUnit extends ManageRelatedRecords
                 ->label('Rent Type')
                     ->options(fn () => $this->getOwnerRecord()
                         ->rentTypes()
-                        ->pluck('name', 'id')
+                        ->pluck('rent_type', 'id')
                         ->toArray()
                     )
                     ->required(),
@@ -85,7 +85,7 @@ class ManageRentUnit extends ManageRelatedRecords
             ->recordTitleAttribute('RentUnit')
             ->columns([
                 TextColumn::make('rent_type')
-                    ->badge(),
+                    ->searchable(),
                 TextColumn::make('tenant_phone')
                     ->searchable(),
                 TextColumn::make('rent_amount')

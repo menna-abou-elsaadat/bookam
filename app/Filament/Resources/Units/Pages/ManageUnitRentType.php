@@ -3,15 +3,14 @@
 namespace App\Filament\Resources\Units\Pages;
 
 use App\Filament\Resources\Units\UnitResource;
+use App\Scopes\ActiveScope;
 use BackedEnum;
-use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\DissociateAction;
-use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -22,55 +21,80 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-
+use Illuminate\Database\Eloquent\Builder;
+use App\Enums\RentType;
+use Filament\Schemas\Components\Utilities\Get;
 
 class ManageUnitRentType extends ManageRelatedRecords
 {
     protected static string $resource = UnitResource::class;
 
-    protected static string $relationship = 'rentTypes';
+    protected static string $relationship = "rentTypes";
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClock;
 
     public function form(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                TextInput::make('name')
-                    ->required(),
-                Textarea::make('description')
-                    ->columnSpanFull(),
-                TextInput::make('duration_value')
-                    ->required()
-                    ->numeric()
-                    ->default(1),
-                Select::make('duration_unit')
-                    ->options(['day' => 'Day', 'month' => 'Month', 'hour' => 'Hour'])
-                    ->required(),
-                Toggle::make('is_active')
-                    ->required(),
-            ]);
+        return $schema->components([
+            Toggle::make("is_active")
+                ->required()
+                ->default(true)
+                ->columnSpanFull(),
+            Select::make("rent_type")
+                ->options([
+                    RentType::Daily->value => RentType::Daily->value,
+                    RentType::Monthly->value => RentType::Monthly->value,
+                ])
+                ->required()
+                ->live(),
+            Select::make("maintenance_deposit")
+                ->options(function ($record) {
+                    $options = [
+                        "1 month" => "1 month",
+                        "2 months" => "2 months",
+                    ];
+                    if (
+                        $record->maintenance_deposit &&
+                        !isset($options[$record->maintenance_deposit])
+                    ) {
+                        $options[$record->maintenance_deposit] =
+                            $record->maintenance_deposit;
+                    }
+                    $options["other"] = "Other";
+                    return $options;
+                })
+                ->live()
+                ->visible(
+                    fn(Get $get): bool => $get("rent_type") ===
+                        RentType::Monthly->value,
+                ),
+            TextInput::make("maintenance_deposit_custom")
+                ->label("Custom maintenance deposit")
+                ->required(
+                    fn(Get $get): bool => $get("maintenance_deposit") ===
+                        "other",
+                )
+                ->visible(
+                    fn(Get $get): bool => $get("maintenance_deposit") ===
+                        "other",
+                ),
+        ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('UnitRentType')
+            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScope(ActiveScope::class))
+            ->recordTitleAttribute("UnitRentType")
             ->columns([
-                TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('duration_value')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('duration_unit')
-                    ->badge(),
-                IconColumn::make('is_active')
-                    ->boolean(),
-                TextColumn::make('created_at')
+                TextColumn::make("rent_type")->badge(),
+                TextColumn::make("maintenance_deposit")->searchable(),
+                IconColumn::make("is_active")->boolean(),
+                TextColumn::make("created_at")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
+                TextColumn::make("updated_at")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -78,17 +102,10 @@ class ManageUnitRentType extends ManageRelatedRecords
             ->filters([
                 //
             ])
-            ->headerActions([
-                CreateAction::make(),
-            ])
-            ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
-            ])
+            ->headerActions([CreateAction::make()])
+            ->recordActions([EditAction::make(), DeleteAction::make()])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                BulkActionGroup::make([DeleteBulkAction::make()]),
             ]);
     }
 }

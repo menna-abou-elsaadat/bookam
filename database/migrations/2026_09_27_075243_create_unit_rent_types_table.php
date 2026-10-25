@@ -13,10 +13,8 @@ return new class extends Migration
         Schema::create('unit_rent_types', function (Blueprint $table) {
             $table->id();
             $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->integer('duration_value')->default(1);
-            $table->enum('duration_unit', array_column(\App\Enums\DurationUnit::cases(), 'value'));
+            $table->enum('rent_type', array_column(\App\Enums\RentType::cases(), 'value'));
+            $table->string('maintenance_deposit')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
