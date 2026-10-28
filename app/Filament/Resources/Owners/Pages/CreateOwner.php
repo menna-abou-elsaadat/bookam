@@ -13,4 +13,9 @@ class CreateOwner extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    protected function afterCreate(): void
+    {
+        $this->record->assignRole('owner');
+    }
 }

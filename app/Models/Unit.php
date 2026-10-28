@@ -10,7 +10,7 @@ class Unit extends Model
 {
     public function Owners()
     {
-        return $this->belongsToMany(Owner::class, 'unit_owners', 'unit_id', 'owner_id')
+        return $this->belongsToMany(User::class, 'unit_owners', 'unit_id', 'owner_id')
             ->withPivot('share_percentage')
             ->withTimestamps();
     }

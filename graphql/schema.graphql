@@ -1,0 +1,21 @@
+type Query {
+    owners: [Owner!]! @all
+    owner(id: ID! @eq): Owner @find
+    units: [Unit!]! @all
+    unit(id: ID! @eq): Unit @find
+}
+
+type Unit {
+    id: ID!
+    code_number: String!
+    address: String!
+    owners: [Owner!]! @belongsToMany
+}
+
+type Owner {
+    id: ID!
+    name: String!
+    email: String!
+    phone: String!
+    units: [Unit!]! @belongsToMany
+}

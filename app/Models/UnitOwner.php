@@ -15,6 +15,6 @@ class UnitOwner extends Model
 
     public function Owner()
     {
-        return $this->belongsTo(Owner::class);
+        return $this->belongsTo(User::class,'owner_id');
     }
 }

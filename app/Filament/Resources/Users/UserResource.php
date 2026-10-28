@@ -14,6 +14,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -21,21 +22,21 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUser;
 
-    protected static ?string $recordTitleAttribute = 'Admin';
+    protected static ?string $recordTitleAttribute = "Admin";
     // Change the navigation label
-    protected static ?string $navigationLabel = 'Admins';
-    protected static string | UnitEnum | null $navigationGroup = 'Management';
+    protected static ?string $navigationLabel = "Admins";
+    protected static string|UnitEnum|null $navigationGroup = "Management";
 
     // Change the plural label
     public static function getPluralLabel(): ?string
     {
-        return 'Admins';
+        return "Admins";
     }
 
     // Change the singular label
     public static function getLabel(): ?string
     {
-        return 'Admin';
+        return "Admin";
     }
     public static function form(Schema $schema): Schema
     {
@@ -44,7 +45,7 @@ class UserResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return (string) static::getEloquentQuery()->count();
     }
 
     public static function table(Table $table): Table
@@ -52,19 +53,23 @@ class UserResource extends Resource
         return UsersTable::configure($table);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->role('admin');
+    }
     public static function getRelations(): array
     {
         return [
-            //
-        ];
+                //
+            ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListUsers::route('/'),
-            'create' => CreateUser::route('/create'),
-            'edit' => EditUser::route('/{record}/edit'),
+            "index" => ListUsers::route("/"),
+            "create" => CreateUser::route("/create"),
+            "edit" => EditUser::route("/{record}/edit"),
         ];
     }
 }

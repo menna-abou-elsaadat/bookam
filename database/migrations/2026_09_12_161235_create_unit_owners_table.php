@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('unit_owners', function (Blueprint $table) {
             $table->id();
             $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
-            $table->foreignId('owner_id')->constrained('owners')->onDelete('cascade');
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->float('share_percentage');
             $table->timestamps();
         });
