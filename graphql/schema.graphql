@@ -1,21 +1,57 @@
 type Query {
-    owners: [Owner!]! @all
-    owner(id: ID! @eq): Owner @find
-    units: [Unit!]! @all
-    unit(id: ID! @eq): Unit @find
+    me: User @guard @auth
+}
+
+type Mutation {
+    register(
+        name: String!
+        email: String! @rules(apply: ["email", "unique:users,email"])
+        password: String! @rules(apply: ["min:8"])
+        phone: String! @rules(apply: ["min:10"])
+        role: String = "Owner"
+    ): AuthPayload! @field(resolver: "App\\GraphQL\\Mutations\\Register")
+
+    login(email: String!, password: String!): AuthPayload!
+        @field(resolver: "App\\GraphQL\\Mutations\\Login")
+
+    logout: Boolean! @guard @field(resolver: "App\\GraphQL\\Mutations\\Logout")
+
+    updateProfile(name: String!, email: String!, phone: String): User!
+        @guard
+        @field(resolver: "App\\GraphQL\\Mutations\\UpdateProfile")
+
+    ChangePassword(
+        currentPassword: String! @rules(apply: ["required"])
+        newPassword: String!
+            @rules(apply: ["required", "min:8", "different:currentPassword"])
+    ): changePasswordPayload!
+        @guard
+        @field(resolver: "App\\GraphQL\\Mutations\\ChangePassword")
+}
+
+type changePasswordPayload {
+    message: String!
+}
+type AuthPayload {
+    token: String!
+    user: User!
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    phone: String
+    roles: [String!]! @method(name: "getRoleNames")
 }
 
 type Unit {
     id: ID!
     code_number: String!
-    address: String!
-    owners: [Owner!]! @belongsToMany
-}
-
-type Owner {
-    id: ID!
-    name: String!
-    email: String!
-    phone: String!
-    units: [Unit!]! @belongsToMany
+    address: String
+    city: String
+    country: String
+    area: String
+    payment_status: String
+    total_price: Float
 }
