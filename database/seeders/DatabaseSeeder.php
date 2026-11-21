@@ -16,6 +16,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            CountrySeeder::class,
+            CitySeeder::class,
+            AreaSeeder::class,
+            VillageSeeder::class,
+        ]);
+
         // User::factory(10)->create();
         Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'owner', 'guard_name' => 'web']);
